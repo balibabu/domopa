@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/domopa/static/css/main.a583cd0f.css",
+    "main.js": "/domopa/static/js/main.5bbe7787.js",
+    "index.html": "/domopa/index.html",
+    "main.a583cd0f.css.map": "/domopa/static/css/main.a583cd0f.css.map",
+    "main.5bbe7787.js.map": "/domopa/static/js/main.5bbe7787.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a583cd0f.css",
+    "static/js/main.5bbe7787.js"
+  ]
+}
