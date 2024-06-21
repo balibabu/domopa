@@ -7,7 +7,7 @@ export default function SidePanel() {
         <div className='bg-teal-500'>
             <div className='p-10 grid justify-items-center'>
                 <div className='w-10'><img src={logo} alt='app logo' /></div>
-                <div className='font-bold text-xl'>DOMAIN LOGGER</div>
+                <div className='font-bold text-xl text-center'>DOMAIN LOGGER</div>
             </div>
             <hr className='border-gray-600' />
 
