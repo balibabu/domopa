@@ -1,6 +1,7 @@
 import React from 'react'
 import logo from '../images/logo.png'
 import Accordion from './Accordion'
+import Adjust from '../images/svg/Adjust'
 
 export default function SidePanel() {
     return (
@@ -11,9 +12,9 @@ export default function SidePanel() {
             </div>
             <hr className='border-gray-600' />
 
-            <div className='p-1 flex'>
-                <input type="text" className='m-1 rounded-full ps-2 flex-grow' placeholder='search' />
-                <span>ad</span>
+            <div className='p-2 flex gap-2'>
+                <input type="text" className='rounded-full ps-2 flex-grow' placeholder='search' />
+                <div><Adjust /></div>
             </div>
             <hr className='border-gray-600' />
 
