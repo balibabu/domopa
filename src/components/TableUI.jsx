@@ -9,8 +9,8 @@ export default function TableUI() {
         <table className="w-full">
             <thead className='text-left bg-yellow-400'>
                 <tr>
-                    <th className=' py-4 ps-2'>Column_name</th>
-                    <th className=' py-4'>Activity_name</th>
+                    <th className=' py-4 ps-2'>Column Name</th>
+                    <th className=' py-4'>Activity Name</th>
                     <th className='hidden md:table-cell py-4'>Status</th>
                     <th className='hidden md:table-cell py-4'>Date</th>
                     <th className='text-center py-4'>Action</th>

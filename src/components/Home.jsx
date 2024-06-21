@@ -47,41 +47,38 @@ export default function Home() {
                 {!showLeftSide && <div className='cursor-pointer bg-teal-500 flex items-center h-full' onClick={() => setShowLeftSide(true)}><Greater /></div>}
             </div>
 
-            <div className='w-full  bg-gray-200 '>
-                <div className='p-5 px-10'>Root/logger</div>
+            <div className='w-full border-r border-gray-600 bg-gray-200'>
+                <div className='p-4 px-6'>Root/logger</div>
                 <hr className='border-gray-600' />
-                <div className='flex h-full'>
-
-                    <div className='w-full'>
-                        <div className='p-3 flex justify-between flex-row gap-5'>
-                            <div className='font-bold'>Activity_name</div>
-                            <input type="text" className='m-1 mx-3 rounded-full ps-2 bg-white flex-grow' placeholder='search' />
-                            <div><UpDown /></div>
-                            <div><Cog /></div>
-                        </div>
-                        <hr className='border-gray-600' />
-                        <div className='flex-grow m-3'><TableUI /></div>
+                <div className='p-3 flex justify-between gap-3'>
+                    <div className='font-bold'>Activity_name</div>
+                    <div className='flex-grow'>
+                        <input type="text" className='rounded-full ps-2 bg-white w-full' placeholder='search' />
                     </div>
-
-                    <div className='border-s border-gray-600'>
-                        {
-                            smallScreen ?
-                                <>
-                                    {showRightSide && <div className='fixed right-0 bg-white h-full border-s border-gray-600'>
-                                        <RightSide />
-                                        <div className='fixed bottom-2 right-2 cursor-pointer' onClick={() => setShowRightSide(false)}><Greater /></div>
-                                    </div>}
-                                </>
-                                :
-                                <>
-                                    {showRightSide && <><RightSide /> <div className='fixed bottom-2 right-2 cursor-pointer' onClick={() => setShowRightSide(false)}><Greater /></div></>}
-                                </>
-                        }
-                        {!showRightSide && <div className='cursor-pointer bg-slate-700 flex items-center text-white h-full' onClick={() => setShowRightSide(true)}><Lesser /></div>}
-                    </div>
-
+                    <div><UpDown /></div>
+                    <div><Cog /></div>
                 </div>
+                <hr className='border-gray-600' />
+                <div className='flex-grow m-3'><TableUI /></div>
             </div>
+
+            <div className=''>
+                {
+                    smallScreen ?
+                        <>
+                            {showRightSide && <div className='fixed right-0 bg-white h-full border-s border-gray-600'>
+                                <RightSide />
+                                <div className='fixed bottom-2 right-2 cursor-pointer' onClick={() => setShowRightSide(false)}><Greater /></div>
+                            </div>}
+                        </>
+                        :
+                        <>
+                            {showRightSide && <><RightSide /> <div className='fixed bottom-2 right-2 cursor-pointer' onClick={() => setShowRightSide(false)}><Greater /></div></>}
+                        </>
+                }
+                {!showRightSide && <div className='cursor-pointer bg-slate-700 flex items-center text-white h-full' onClick={() => setShowRightSide(true)}><Lesser /></div>}
+            </div>
+
         </div>
     );
 }
