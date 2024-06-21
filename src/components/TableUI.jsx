@@ -8,8 +8,8 @@ export default function TableUI() {
                 <tr>
                     <th>Column_name</th>
                     <th>Activity_name</th>
-                    <th>Status</th>
-                    <th>Date</th>
+                    <th className='hidden md:table-cell'>Status</th>
+                    <th className='hidden md:table-cell'>Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -17,8 +17,8 @@ export default function TableUI() {
                 <tr className='bg-white'>
                     <td>1.</td>
                     <td>activity 1</td>
-                    <td>mark</td>
-                    <td>created on</td>
+                    <td className='hidden md:table-cell'>mark</td>
+                    <td className='hidden md:table-cell'>created on</td>
                     <td>view edit delete</td>
                 </tr>
             </tbody>
