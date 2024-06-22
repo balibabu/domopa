@@ -23,7 +23,7 @@ export default function TableUI() {
                     <td>activity 1</td>
                     <td className='hidden md:table-cell'>mark</td>
                     <td className='hidden md:table-cell'>created on</td>
-                    <td><div className='flex justify-between'><div><Eye /></div> <div><Pencil /></div><div><Bin /></div> </div></td>
+                    <td><div className='flex justify-between'><div className='w-6'><Eye /></div> <div className='w-6'><Pencil /></div><div className='w-6'><Bin /></div> </div></td>
                 </tr>
             </tbody>
         </table>
