@@ -1,6 +1,7 @@
 import React from 'react'
 import Greater from '../images/svg/Greater';
 import Lesser from '../images/svg/Lesser';
+import Plus from '../images/svg/Plus';
 
 export default function RightSide({ smallScreen, showRightSide, setShowRightSide }) {
     return (
@@ -29,7 +30,7 @@ function PageContent() {
             <div className='p-3 flex bg-slate-700 gap-2 font-bold'>
                 <div className=' text-white'>Attributes</div>
                 <input type="text" className='m-1 rounded-full ps-2 bg-white' placeholder='search' />
-                <span className='text-white text-xl'>+</span>
+                <div className='text-white text-xl w-5'><Plus/></div>
             </div>
         </div>
     );

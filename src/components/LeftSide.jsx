@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo from '../images/logo.png'
 import Accordion from './Accordion';
 import Adjust from '../images/svg/Adjust';
 import Lesser from '../images/svg/Lesser';
 import Greater from '../images/svg/Greater';
+import VariableContext from './Context/VariableContext';
 
 export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide }) {
     return (
@@ -27,6 +28,22 @@ export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide })
 }
 
 function PageContent() {
+    const { data, stack, insertData, insertInStack } = useContext(VariableContext);
+    const [domains, setDomains] = useState([]);
+    const [operations, setOperations] = useState([]);
+    const [activities, setActivities] = useState([]);
+
+    useEffect(() => {
+        let values = { ...data };
+        for (let item of stack) {
+            values = values[item];
+        }
+        setDomains(Object.keys(values.domains))
+        setOperations(Object.keys(values.operations))
+        setActivities(Object.keys(values.activities))
+    }, [stack, data]);
+
+
     return (
         <div className='bg-teal-500 h-full'>
             <div className='p-10 grid justify-items-center'>
@@ -41,10 +58,23 @@ function PageContent() {
             </div>
             <hr className='border-gray-600' />
 
-            <Accordion {...{ title: 'Domain', items: ['item 1', 'item 2'] }} />
-            <Accordion {...{ title: 'Operation', items: ['item 1', 'item 2', 'item 3'] }} />
-            <Accordion {...{ title: 'Activity', items: ['item 0', 'item 1', 'item 2'] }} />
+            <Accordion {...{
+                title: 'Domain', items: domains,
+                clickHandler: (item) => insertInStack('domains', item),
+                createHandler: (newData) => insertData('domains', newData)
+            }} />
+            <Accordion {...{
+                title: 'Operation', items: operations,
+                clickHandler: (item) => insertInStack('operations', item),
+                createHandler: (newData) => insertData('operations', newData)
+            }} />
+            <Accordion {...{
+                title: 'Activity', items: activities,
+                clickHandler: (item) => insertInStack('activities', item),
+                createHandler: (newData) => insertData('activities', newData)
+            }} />
 
         </div>
+
     );
 }
