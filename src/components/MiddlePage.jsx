@@ -17,9 +17,9 @@ export default function MiddlePage() {
                 <span className='hover:opacity-20 cursor-pointer' onClick={() => onBreadCrumbClick(-1)}>root</span>
                 {stack.map((item, i) => {
                     if (['domains', 'operations', 'activities'].includes(item)) {
-                        return <span key={i} className='px-1'>/</span>
+                        return <span key={i} className='px-1' >/</span>
                     }
-                    return <span key={i} className='hover:underline underline-offset-2 cursor-pointer' onClick={() => onBreadCrumbClick(i)}>{item}</span>
+                    return <span key={i} className='hover:underline underline-offset-2 cursor-pointer' onClick={() => onBreadCrumbClick(i)}>{stack[i - 1].substr(0, 2)}-{item}</span>
                 })}
             </div>
             <hr className='border-gray-600' />

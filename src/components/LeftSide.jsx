@@ -5,6 +5,7 @@ import Adjust from '../images/svg/Adjust';
 import Lesser from '../images/svg/Lesser';
 import Greater from '../images/svg/Greater';
 import VariableContext from './Context/VariableContext';
+import AppLogo from '../images/framer/AppLogo';
 
 export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide }) {
     return (
@@ -14,12 +15,12 @@ export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide })
                     <>
                         {showLeftSide && <div className='fixed h-full'>
                             <PageContent />
-                            <div className='fixed bottom-2 start-2 cursor-pointer w-6' onClick={() => setShowLeftSide(false)}><Lesser /></div>
+                            <div className='fixed bottom-2 start-2 cursor-pointer w-8 hover:bg-teal-300 p-1 rounded-full' onClick={() => setShowLeftSide(false)}><Lesser /></div>
                         </div>}
                     </>
                     :
                     <>
-                        {showLeftSide && <><PageContent /> <div className='fixed bottom-2 start-2 cursor-pointer w-6' onClick={() => setShowLeftSide(false)}><Lesser /></div></>}
+                        {showLeftSide && <><PageContent /> <div className='fixed bottom-2 start-2 cursor-pointer w-8 hover:bg-teal-300 p-1 rounded-full' onClick={() => setShowLeftSide(false)}><Lesser /></div></>}
                     </>
             }
             {!showLeftSide && <div className='cursor-pointer bg-teal-500 flex items-center h-full w-4' onClick={() => setShowLeftSide(true)}><Greater /></div>}
@@ -28,7 +29,7 @@ export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide })
 }
 
 function PageContent() {
-    const { data, stack, insertData, insertInStack } = useContext(VariableContext);
+    const { data, stack, insertData, insertInStack, removeData } = useContext(VariableContext);
     const [domains, setDomains] = useState([]);
     const [operations, setOperations] = useState([]);
     const [activities, setActivities] = useState([]);
@@ -47,13 +48,13 @@ function PageContent() {
     return (
         <div className='bg-teal-500 h-full'>
             <div className='p-10 grid justify-items-center'>
-                <div className='w-10'><img src={logo} alt='app logo' /></div>
+                <div className='w-12'><AppLogo /></div>
                 <div className='font-bold text-xl text-center'>DOMAIN LOGGER</div>
             </div>
             <hr className='border-gray-600' />
 
             <div className='p-2 flex gap-2'>
-                <input type="text" className='rounded-full ps-2 flex-grow' placeholder='search' />
+                <input type="text" className='rounded-full ps-2 flex-grow outline-teal-600' placeholder='search' />
                 <div className='w-6'><Adjust /></div>
             </div>
             <hr className='border-gray-600' />
@@ -61,17 +62,20 @@ function PageContent() {
             <Accordion {...{
                 title: 'Domain', items: domains,
                 clickHandler: (item) => insertInStack('domains', item),
-                createHandler: (newData) => insertData('domains', newData)
+                createHandler: (newData) => insertData('domains', newData),
+                deleteHandler: (item) => removeData('domains', item)
             }} />
             <Accordion {...{
                 title: 'Operation', items: operations,
                 clickHandler: (item) => insertInStack('operations', item),
-                createHandler: (newData) => insertData('operations', newData)
+                createHandler: (newData) => insertData('operations', newData),
+                deleteHandler: (item) => removeData('operations', item)
             }} />
             <Accordion {...{
                 title: 'Activity', items: activities,
                 clickHandler: (item) => insertInStack('activities', item),
-                createHandler: (newData) => insertData('activities', newData)
+                createHandler: (newData) => insertData('activities', newData),
+                deleteHandler: (item) => removeData('activities', item)
             }} />
 
         </div>
