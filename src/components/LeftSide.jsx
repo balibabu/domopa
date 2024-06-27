@@ -6,6 +6,8 @@ import Lesser from '../images/svg/Lesser';
 import Greater from '../images/svg/Greater';
 import VariableContext from './Context/VariableContext';
 import AppLogo from '../images/framer/AppLogo';
+import { LocalStorageJSONModel } from "./Context/LocalStorageJSONModel";
+import { useNavigate } from 'react-router-dom';
 
 export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide }) {
     return (
@@ -28,25 +30,53 @@ export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide })
     )
 }
 
+const model = new LocalStorageJSONModel();
 function PageContent() {
-    const { data, stack, insertData, insertInStack, removeData } = useContext(VariableContext);
+    const { data, stack, setStack } = useContext(VariableContext);
+    const [values, setValues] = useState(model.readEntry(stack) || {});
     const [domains, setDomains] = useState([]);
     const [operations, setOperations] = useState([]);
     const [activities, setActivities] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        let values = { ...data };
-        for (let item of stack) {
-            values = values[item];
-        }
-        setDomains(Object.keys(values.domains))
-        setOperations(Object.keys(values.operations))
-        setActivities(Object.keys(values.activities))
-    }, [stack, data]);
+        reflectChanges()
+    }, [stack]);
+
+    function reflectChanges() {
+        try { setDomains(model.readEntry([...stack, 'domains']) || []); }
+        catch (error) { setDomains([]); }
+        try { setOperations(model.readEntry([...stack, 'operations']) || []); }
+        catch (error) { setOperations([]); }
+        try { setActivities(model.readEntry([...stack, 'activities']) || []); }
+        catch (error) { setActivities([]); }
+    }
+
+    function insertData(space, name) {
+        model.addEntry([...stack, space, Date.now()], {
+            name,
+            attributes: {},
+            space: {},
+            modified: '',
+        })
+        reflectChanges();
+    }
+
+    function insertInStack(space, key) {
+        // setStack((prev) => [...prev, space, key, 'space']);
+        const routes = [...stack, space, key, 'space']
+        navigate(`/${routes.join('%20')}`);
+    }
+
+    function removeData(space, key) {
+        model.deleteEntry([...stack, space, key]);
+        reflectChanges();
+    }
 
 
     return (
         <div className='bg-teal-500 h-full'>
+            <button onClick={() => console.log(model.readEntry([]))}>log</button>
             <div className='p-10 grid justify-items-center'>
                 <div className='w-12'><AppLogo /></div>
                 <div className='font-bold text-xl text-center'>DOMAIN LOGGER</div>

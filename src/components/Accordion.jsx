@@ -20,9 +20,8 @@ export default function Accordion({ title, items, clickHandler, createHandler, d
     }
 
     function saveHandler() {
-        createHandler({
-            key: inputFieldValue, value: { domains: {}, operations: {}, activities: {} }
-        });
+        createHandler(inputFieldValue);
+        setInputFieldValue('')
         setFormOpen(false);
     }
 
@@ -34,44 +33,31 @@ export default function Accordion({ title, items, clickHandler, createHandler, d
         setFormOpen(true);
     }
 
-    function createUpdateHandler(isNew) {
-        if (isNew) {
-            createHandler(inputFieldValue);
-        } else {
-            // updateHandler(inputFieldValue, title);
-
-        }
-        setFormOpen(false);
-        setInputFieldValue('');
-    }
-
     function onEditClick(item) {
-        const poped = deleteHandler(item);
-        // setInputFieldValue(poped.title);
-        console.log(poped);
+
     }
 
     return (
         <div>
             <div className='flex justify-between'>
-                <div className='cursor-pointer font-bold p-2 flex gap-1 hover:bg-teal-600 w-full'
+                <div className='cursor-pointer font-bold p-2 flex gap-1 w-full'
                     onClick={() => collapseHandler(!collapsed)}>
                     {collapsed ? <div className='w-6'><Greater /></div> : <div className=' w-6'><Down /></div>} {title}
                 </div>
-                <div className='cursor-pointer w-10 px-2 hover:bg-teal-600' onClick={onCreate}><Plus /></div>
+                <div className='cursor-pointer w-10 px-2' onClick={onCreate}><Plus /></div>
             </div>
-            {!collapsed && <div className='pb-2 px-3'>
+            {!collapsed && <div className='ms-9 pb-2 pr-2'>
                 {formOpen && <div className='flex'>
-                    <input type="text" className='w-full px-1 bg-teal-300 rounded outline-teal-600' ref={inputFieldRef} value={inputFieldValue} onChange={(e) => setInputFieldValue(e.target.value)} />
+                    <input type="text" className='w-full px-1 bg-teal-300 outline-teal-600' ref={inputFieldRef} value={inputFieldValue} onChange={(e) => setInputFieldValue(e.target.value)} />
                     <div className='w-6 h-6 border mx-1 border-green-300 text-green-900 hover:bg-green-300' onClick={saveHandler}><Check /></div>
                     <div className='w-6 h-6 border border-red-300 text-red-600 hover:bg-red-300' onClick={() => setFormOpen(false)}><Cross /></div>
                 </div>}
-                {items.map((item, index) => (
+                {items && Object.keys(items).map((key, index) => (
                     <div className='flex justify-between' key={index}>
-                        <div className='flex gap-1 cursor-pointer hover:bg-teal-300 w-full ps-2 mr-2 rounded-full' onClick={() => clickHandler(item)}><div>{item}</div><div className='w-4 h-6'> <Greater /></div></div>
+                        <div className='flex gap-2 cursor-pointer w-full mr-2'><div className='hover:underline underline-offset-2'>{items[key].name}</div><div className='w-4 h-6 hover:opacity-50' onClick={() => clickHandler(key)}> <Greater /></div></div>
                         <div className='flex gap-2'>
-                            <div className='w-6 hover:bg-teal-300 rounded-full p-1' onClick={() => onEditClick(item)}><Pencil /></div>
-                            <div className='w-6 hover:bg-teal-300 rounded-full p-1'><Bin /></div>
+                            <div className='w-5' onClick={() => onEditClick(key)}><Pencil /></div>
+                            <div className='w-5' onClick={() => deleteHandler(key)}><Bin /></div>
                         </div>
                     </div>
                 ))}

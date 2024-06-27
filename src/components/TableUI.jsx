@@ -16,7 +16,7 @@ export default function TableUI() {
                     <th className='text-center py-4'>Action</th>
                 </tr>
             </thead>
-            <hr className='border-4'/>
+            {/* <hr className='border-4'/> */}
             <tbody>
                 <tr className='bg-white'>
                     <td>1.</td>

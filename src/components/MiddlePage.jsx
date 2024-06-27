@@ -3,23 +3,32 @@ import UpDown from '../images/svg/UpDown'
 import Cog from '../images/svg/Cog'
 import TableUI from './TableUI'
 import VariableContext from './Context/VariableContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function MiddlePage() {
-    const { stack, removeFromStack } = useContext(VariableContext);
+    const { stack } = useContext(VariableContext);
+    const navigate = useNavigate();
 
     function onBreadCrumbClick(index) {
-        removeFromStack(index);
+        if (index === 0) {
+            navigate('/root');
+        } else {
+            const routes = stack.slice(0, index + 2);
+            navigate(`/${routes.join('%20')}`);
+        }
     }
 
     return (
         <div className='w-full border-r border-gray-600 bg-gray-200'>
             <div className='p-4 px-6 flex flex-wrap'>
-                <span className='hover:opacity-20 cursor-pointer' onClick={() => onBreadCrumbClick(-1)}>root</span>
+                {/* <span className='hover:opacity-20 cursor-pointer' onClick={() => onBreadCrumbClick(-1)}>root</span> */}
                 {stack.map((item, i) => {
                     if (['domains', 'operations', 'activities'].includes(item)) {
                         return <span key={i} className='px-1' >/</span>
+                    } else if (item === 'space') {
+                        return ''
                     }
-                    return <span key={i} className='hover:underline underline-offset-2 cursor-pointer' onClick={() => onBreadCrumbClick(i)}>{stack[i - 1].substr(0, 2)}-{item}</span>
+                    return <span key={i} className='hover:underline underline-offset-2 cursor-pointer' onClick={() => onBreadCrumbClick(i)}>{item}</span>
                 })}
             </div>
             <hr className='border-gray-600' />

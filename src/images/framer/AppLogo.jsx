@@ -5,7 +5,7 @@ export default function AppLogo() {
     const icon = {
         hidden: {
             pathLength: 0,
-            fill: "rgba(255, 255, 255, 0)"
+            fill: "rgba(20,184,166, 0)"
         },
         visible: {
             pathLength: 1,
