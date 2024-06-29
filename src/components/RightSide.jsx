@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import Greater from '../images/svg/Greater';
 import Lesser from '../images/svg/Lesser';
 import Plus from '../images/svg/Plus';
+import VariableContext from './Context/VariableContext';
+import CustomModal from './Utilities/CustomModal';
+import AttributeForm from './AttributeForm';
+import Bin from '../images/svg/Bin';
+import Pencil from '../images/svg/Pencil';
+import Confirmation from './Confirmation';
 
 export default function RightSide({ smallScreen, showRightSide, setShowRightSide }) {
     return (
@@ -25,13 +31,61 @@ export default function RightSide({ smallScreen, showRightSide, setShowRightSide
 }
 
 function PageContent() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { model, selected, setSelected, stack } = useContext(VariableContext);
+    const attkeys = Object.keys(selected.attributes || {});
+
+    function deleteAnAttribut(key) {
+        if (Confirmation('Are you sure?')) {
+            model.deleteEntry([...stack, selected.type, selected.key, 'attributes', key]);
+            setSelected((prev) => {
+                const attributes = { ...prev.attributes };
+                delete attributes[key];
+                return { ...prev, attributes };
+            })
+        }
+    }
+
     return (
         <div>
+            <CustomModal {...{ isModalOpen, setIsModalOpen, top: 50, outClick: false }}>
+                <AttributeForm {...{ setIsModalOpen }} />
+            </CustomModal>
             <div className='p-3 flex bg-slate-700 gap-2 font-bold'>
                 <div className=' text-white'>Attributes</div>
                 <input type="text" className='m-1 rounded-full ps-2 bg-white' placeholder='search' />
-                <div className='text-white text-xl w-5'><Plus /></div>
+                <div className='text-white text-xl w-5' onClick={() => setIsModalOpen(true)}><Plus /></div>
+            </div>
+            <div className='p-3'>
+                <table className="w-full text-left">
+                    <thead className='bg-gray-300'>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>created</td>
+                            <td>{new Date(parseInt(selected.key)).toLocaleString()}</td>
+                        </tr>
+                        {attkeys.map((key) => (
+                            <tr key={key}>
+                                <td>{key}</td>
+                                <td>{typeof (selected.attributes[key]) === 'object' ? JSON.stringify(selected.attributes[key]) : selected.attributes[key] || '-'}</td>
+                                <td>
+                                    <div className='flex'>
+                                        <div className='w-5 text-red-500' onClick={() => deleteAnAttribut(key)}><Bin /></div>
+                                        <div className='w-5 text-green-500'><Pencil /></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
 }
+

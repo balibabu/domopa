@@ -14,7 +14,7 @@ export default function MiddlePage() {
             navigate('/root');
         } else {
             const routes = stack.slice(0, index + 2);
-            navigate(`/${routes.join('%20')}`);
+            navigate(`/${routes.join('/')}`);
         }
     }
 
@@ -35,7 +35,7 @@ export default function MiddlePage() {
             <div className='p-3 flex justify-between gap-3'>
                 <div className='font-bold'>Activity_name</div>
                 <div className='flex-grow'>
-                    <input type="text" className='rounded-full ps-2 bg-white w-full' placeholder='search' />
+                    <input type="text" className='rounded-full ps-2 bg-white w-full outline-gray-300' placeholder='search' />
                 </div>
                 <div className='w-6'><UpDown /></div>
                 <div className='w-6'><Cog /></div>

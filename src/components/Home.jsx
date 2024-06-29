@@ -7,17 +7,16 @@ import { useParams } from 'react-router-dom';
 import VariableContext from './Context/VariableContext';
 
 export default function Home() {
-    const { stack } = useParams();
+    const { '*': url } = useParams();
     const [showLeftSide, setShowLeftSide] = useState(window.innerWidth > 768);
     const [showRightSide, setShowRightSide] = useState(false); //window.innerWidth > 768
     const [smallScreen, setSmallScreen] = useState(window.innerWidth < 768);
-
     const { setStack } = useContext(VariableContext);
-    useEffect(() => {
-        if (stack)
-            setStack(stack.split(' '));
-    }, [stack])
 
+    useEffect(() => {
+        if (url)
+            setStack(url.split('/'));
+    }, [url])
 
     return (
         <>

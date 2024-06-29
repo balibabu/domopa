@@ -11,7 +11,7 @@ export default function App() {
             <HashRouter>
                 <Routes >
                     <Route path="/" element={<Navigate to="/root" />} />
-                    <Route path="/:stack" element={<Home />} />
+                    <Route path="/*" element={<Home />} />
                     <Route path="/editor" element={<Editor />} />
                 </Routes>
             </HashRouter>

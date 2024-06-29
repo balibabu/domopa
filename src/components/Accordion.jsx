@@ -7,7 +7,7 @@ import Plus from '../images/svg/Plus';
 import Cross from '../images/svg/Cross';
 import Check from '../images/svg/Check';
 
-export default function Accordion({ title, items, clickHandler, createHandler, deleteHandler }) {
+export default function Accordion({ title, items, insertInStack, insertData, removeData, setSelected, selected }) {
     const [collapsed, setCollapsed] = useState(localStorage.getItem('accordion-' + title) === 'true');
     const [formOpen, setFormOpen] = useState(false);
     const [inputFieldValue, setInputFieldValue] = useState('');
@@ -20,7 +20,7 @@ export default function Accordion({ title, items, clickHandler, createHandler, d
     }
 
     function saveHandler() {
-        createHandler(inputFieldValue);
+        insertData(title.toLowerCase(), inputFieldValue);
         setInputFieldValue('')
         setFormOpen(false);
     }
@@ -53,16 +53,22 @@ export default function Accordion({ title, items, clickHandler, createHandler, d
                     <div className='w-6 h-6 border border-red-300 text-red-600 hover:bg-red-300' onClick={() => setFormOpen(false)}><Cross /></div>
                 </div>}
                 {items && Object.keys(items).map((key, index) => (
-                    <div className='flex justify-between' key={index}>
-                        <div className='flex gap-2 cursor-pointer w-full mr-2'><div className='hover:underline underline-offset-2'>{items[key].name}</div><div className='w-4 h-6 hover:opacity-50' onClick={() => clickHandler(key)}> <Greater /></div></div>
+                    <div className='flex' key={index}>
+                        <div className='flex gap-5 cursor-pointer w-full mr-2'>
+                            <div className={selected.key === key ? 'underline underline-offset-2' : 'hover:underline'}
+                                onClick={() => setSelected({ ...items[key], key, type: title.toLowerCase() })}>{items[key].name}</div>
+                            <div className='hover:opacity-50 flex-grow flex flex-row-reverse' onClick={() => insertInStack(title.toLowerCase(), key)}>
+                                <div className='w-5'><Greater /></div>
+                            </div>
+                        </div>
                         <div className='flex gap-2'>
                             <div className='w-5' onClick={() => onEditClick(key)}><Pencil /></div>
-                            <div className='w-5' onClick={() => deleteHandler(key)}><Bin /></div>
+                            <div className='w-5' onClick={() => removeData(title.toLowerCase(), key)}><Bin /></div>
                         </div>
                     </div>
                 ))}
             </div>}
             <hr className='border-gray-600' />
-        </div>
+        </div >
     )
 }

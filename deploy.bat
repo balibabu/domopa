@@ -9,7 +9,7 @@ git status
 ECHO -------- Commiting --------
 
 REM commit message
-set /p commit_message=Enter commit message:   
+set /p commit_message=Enter commit message:
 git commit -m "%commit_message%"
 
 ECHO -------- Pushing --------

@@ -10,6 +10,7 @@ export const VariableProvider = ({ children }) => {
     const stringdata = localStorage.getItem("data");
     const [data, setData] = useState(JSON.parse(stringdata) || { domains: {}, operations: {}, activities: {} });
     const [stack, setStack] = useState(['root']);
+    const [selected, setSelected] = useState({});
     const model = new LocalStorageJSONModel();
 
     const contextData = {
@@ -19,6 +20,7 @@ export const VariableProvider = ({ children }) => {
         stack, setStack,
         insertInStack: (typ, item) => addItem(setStack, typ, item),
         removeFromStack: (index) => removeItem(setStack, index),
+        selected, setSelected,
     }
 
     return (
@@ -27,7 +29,6 @@ export const VariableProvider = ({ children }) => {
         </VariableContext.Provider>
     )
 }
-
 
 // const t = {
 //     dom: {

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import logo from '../images/logo.png'
 import Accordion from './Accordion';
 import Adjust from '../images/svg/Adjust';
 import Lesser from '../images/svg/Lesser';
@@ -8,6 +7,7 @@ import VariableContext from './Context/VariableContext';
 import AppLogo from '../images/framer/AppLogo';
 import { LocalStorageJSONModel } from "./Context/LocalStorageJSONModel";
 import { useNavigate } from 'react-router-dom';
+import Confirmation from './Confirmation';
 
 export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide }) {
     return (
@@ -30,47 +30,44 @@ export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide })
     )
 }
 
-const model = new LocalStorageJSONModel();
 function PageContent() {
-    const { data, stack, setStack } = useContext(VariableContext);
-    const [values, setValues] = useState(model.readEntry(stack) || {});
-    const [domains, setDomains] = useState([]);
-    const [operations, setOperations] = useState([]);
-    const [activities, setActivities] = useState([]);
+    const { model, stack, selected, setSelected } = useContext(VariableContext);
+    const [domains, setDomains] = useState({});
+    const [operations, setOperations] = useState({});
+    const [activities, setActivities] = useState({});
     const navigate = useNavigate();
 
-    useEffect(() => {
-        reflectChanges()
-    }, [stack]);
+    useEffect(() => reflectChanges(), [stack]);
 
     function reflectChanges() {
-        try { setDomains(model.readEntry([...stack, 'domains']) || []); }
+        try { setDomains({ ...model.readEntry([...stack, 'domains']) } || {}); }
         catch (error) { setDomains([]); }
-        try { setOperations(model.readEntry([...stack, 'operations']) || []); }
+        try { setOperations({ ...model.readEntry([...stack, 'operations']) } || {}); }
         catch (error) { setOperations([]); }
-        try { setActivities(model.readEntry([...stack, 'activities']) || []); }
+        try { setActivities({ ...model.readEntry([...stack, 'activities']) } || {}); }
         catch (error) { setActivities([]); }
     }
 
     function insertData(space, name) {
         model.addEntry([...stack, space, Date.now()], {
             name,
-            attributes: {},
+            attributes: { modified: '', },
             space: {},
-            modified: '',
+
         })
         reflectChanges();
     }
 
     function insertInStack(space, key) {
-        // setStack((prev) => [...prev, space, key, 'space']);
         const routes = [...stack, space, key, 'space']
-        navigate(`/${routes.join('%20')}`);
+        navigate(`/${routes.join('/')}`);
     }
 
     function removeData(space, key) {
-        model.deleteEntry([...stack, space, key]);
-        reflectChanges();
+        if (Confirmation('are you sure?')) {
+            model.deleteEntry([...stack, space, key]);
+            reflectChanges();
+        }
     }
 
 
@@ -89,25 +86,9 @@ function PageContent() {
             </div>
             <hr className='border-gray-600' />
 
-            <Accordion {...{
-                title: 'Domain', items: domains,
-                clickHandler: (item) => insertInStack('domains', item),
-                createHandler: (newData) => insertData('domains', newData),
-                deleteHandler: (item) => removeData('domains', item)
-            }} />
-            <Accordion {...{
-                title: 'Operation', items: operations,
-                clickHandler: (item) => insertInStack('operations', item),
-                createHandler: (newData) => insertData('operations', newData),
-                deleteHandler: (item) => removeData('operations', item)
-            }} />
-            <Accordion {...{
-                title: 'Activity', items: activities,
-                clickHandler: (item) => insertInStack('activities', item),
-                createHandler: (newData) => insertData('activities', newData),
-                deleteHandler: (item) => removeData('activities', item)
-            }} />
-
+            <Accordion {...{ title: 'Domains', items: domains, insertInStack, insertData, removeData, setSelected, selected }} />
+            <Accordion {...{ title: 'Operations', items: operations, insertInStack, insertData, removeData, setSelected, selected }} />
+            <Accordion {...{ title: 'Activities', items: activities, insertInStack, insertData, removeData, setSelected, selected }} />
         </div>
 
     );
