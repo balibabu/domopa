@@ -5,9 +5,9 @@ import Lesser from '../images/svg/Lesser';
 import Greater from '../images/svg/Greater';
 import VariableContext from './Context/VariableContext';
 import AppLogo from '../images/framer/AppLogo';
-import { LocalStorageJSONModel } from "./Context/LocalStorageJSONModel";
 import { useNavigate } from 'react-router-dom';
 import Confirmation from './Confirmation';
+import ActivitiesAccord from './ActivitiesAccord';
 
 export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide }) {
     return (
@@ -15,7 +15,7 @@ export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide })
             {
                 smallScreen ?
                     <>
-                        {showLeftSide && <div className='fixed h-full'>
+                        {showLeftSide && <div className='fixed h-full z-10'>
                             <PageContent />
                             <div className='fixed bottom-2 start-2 cursor-pointer w-8 hover:bg-teal-300 p-1 rounded-full' onClick={() => setShowLeftSide(false)}><Lesser /></div>
                         </div>}
@@ -31,32 +31,10 @@ export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide })
 }
 
 function PageContent() {
-    const { model, stack, selected, setSelected } = useContext(VariableContext);
-    const [domains, setDomains] = useState({});
-    const [operations, setOperations] = useState({});
-    const [activities, setActivities] = useState({});
+    const { model, stack, selected, setSelected, domains, operations, activities, reflectChanges } = useContext(VariableContext);
     const navigate = useNavigate();
 
     useEffect(() => reflectChanges(), [stack]);
-
-    function reflectChanges() {
-        try { setDomains({ ...model.readEntry([...stack, 'domains']) } || {}); }
-        catch (error) { setDomains([]); }
-        try { setOperations({ ...model.readEntry([...stack, 'operations']) } || {}); }
-        catch (error) { setOperations([]); }
-        try { setActivities({ ...model.readEntry([...stack, 'activities']) } || {}); }
-        catch (error) { setActivities([]); }
-    }
-
-    function insertData(space, name) {
-        model.addEntry([...stack, space, Date.now()], {
-            name,
-            attributes: { modified: '', },
-            space: {},
-
-        })
-        reflectChanges();
-    }
 
     function insertInStack(space, key) {
         const routes = [...stack, space, key, 'space']
@@ -86,9 +64,10 @@ function PageContent() {
             </div>
             <hr className='border-gray-600' />
 
-            <Accordion {...{ title: 'Domains', items: domains, insertInStack, insertData, removeData, setSelected, selected }} />
-            <Accordion {...{ title: 'Operations', items: operations, insertInStack, insertData, removeData, setSelected, selected }} />
-            <Accordion {...{ title: 'Activities', items: activities, insertInStack, insertData, removeData, setSelected, selected }} />
+            <Accordion {...{ title: 'Domains', items: domains, insertInStack, removeData, setSelected, selected, reflectChanges }} />
+            <Accordion {...{ title: 'Operations', items: operations, insertInStack, removeData, setSelected, selected, reflectChanges }} />
+            {/* <Accordion {...{ title: 'Activities', items: activities, insertInStack, removeData, setSelected, selected, reflectChanges }} /> */}
+            <ActivitiesAccord {...{ domains, operations, activities, insertInStack, removeData, setSelected, selected, reflectChanges }} />
         </div>
 
     );

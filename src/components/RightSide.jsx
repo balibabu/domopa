@@ -32,8 +32,12 @@ export default function RightSide({ smallScreen, showRightSide, setShowRightSide
 
 function PageContent() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { model, selected, setSelected, stack } = useContext(VariableContext);
+    const [updatingItem, setUpdatingItem] = useState({});
+    const { model, selected, setSelected, stack, reflectChanges } = useContext(VariableContext);
     const attkeys = Object.keys(selected.attributes || {});
+
+    const [addUpdateValues, setAddUpdateValues] = useState({});
+
 
     function deleteAnAttribut(key) {
         if (Confirmation('Are you sure?')) {
@@ -46,15 +50,25 @@ function PageContent() {
         }
     }
 
+    function onCreate() {
+        setAddUpdateValues({ setIsModalOpen, setAddUpdateValues });
+        setIsModalOpen(true);
+    }
+
+    function onEditClick(attKey, value) {
+        setAddUpdateValues({ setIsModalOpen, attKey, value, setAddUpdateValues });
+        setIsModalOpen(true);
+    }
+
     return (
         <div>
             <CustomModal {...{ isModalOpen, setIsModalOpen, top: 50, outClick: false }}>
-                <AttributeForm {...{ setIsModalOpen }} />
+                <AttributeForm {...addUpdateValues} />
             </CustomModal>
             <div className='p-3 flex bg-slate-700 gap-2 font-bold'>
                 <div className=' text-white'>Attributes</div>
                 <input type="text" className='m-1 rounded-full ps-2 bg-white' placeholder='search' />
-                <div className='text-white text-xl w-5' onClick={() => setIsModalOpen(true)}><Plus /></div>
+                <div className='text-white text-xl w-5' onClick={onCreate}><Plus /></div>
             </div>
             <div className='p-3'>
                 <table className="w-full text-left">
@@ -70,18 +84,25 @@ function PageContent() {
                             <td>created</td>
                             <td>{new Date(parseInt(selected.key)).toLocaleString()}</td>
                         </tr>
-                        {attkeys.map((key) => (
-                            <tr key={key}>
-                                <td>{key}</td>
-                                <td>{typeof (selected.attributes[key]) === 'object' ? JSON.stringify(selected.attributes[key]) : selected.attributes[key] || '-'}</td>
-                                <td>
-                                    <div className='flex'>
-                                        <div className='w-5 text-red-500' onClick={() => deleteAnAttribut(key)}><Bin /></div>
-                                        <div className='w-5 text-green-500'><Pencil /></div>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                        <tr>
+                            <td>modified</td>
+                            <td>{new Date(parseInt(selected.key)).toLocaleString()}</td>
+                        </tr>
+                        {attkeys.map((key) => {
+                            const value = typeof (selected.attributes[key]) === 'object' ? JSON.stringify(selected.attributes[key]) : selected.attributes[key];
+                            return (
+                                <tr key={key}>
+                                    <td>{key}</td>
+                                    <td>{value || '-'}</td>
+                                    <td>
+                                        <div className='flex'>
+                                            <div className='w-5 text-red-500' onClick={() => deleteAnAttribut(key)}><Bin /></div>
+                                            <div className='w-5 text-green-500' onClick={() => onEditClick(key, selected.attributes[key])}><Pencil /></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>

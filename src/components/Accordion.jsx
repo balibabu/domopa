@@ -4,41 +4,35 @@ import Down from '../images/svg/Down';
 import Pencil from '../images/svg/Pencil';
 import Bin from '../images/svg/Bin';
 import Plus from '../images/svg/Plus';
-import Cross from '../images/svg/Cross';
-import Check from '../images/svg/Check';
+import CustomModal from './Utilities/CustomModal';
+import AddUpdateForm from './AddUpdateForm';
 
-export default function Accordion({ title, items, insertInStack, insertData, removeData, setSelected, selected }) {
+export default function Accordion({ title, items, insertInStack, removeData, setSelected, selected, reflectChanges }) {
     const [collapsed, setCollapsed] = useState(localStorage.getItem('accordion-' + title) === 'true');
-    const [formOpen, setFormOpen] = useState(false);
-    const [inputFieldValue, setInputFieldValue] = useState('');
-    const inputFieldRef = useRef(null);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [addUpdateValues, setAddUpdateValues] = useState({});
+
 
     function collapseHandler(status) {
         localStorage.setItem('accordion-' + title, status);
         setCollapsed(status);
     }
 
-    function saveHandler() {
-        insertData(title.toLowerCase(), inputFieldValue);
-        setInputFieldValue('')
-        setFormOpen(false);
-    }
-
     function onCreate() {
-        setTimeout(() => {
-            inputFieldRef.current.focus();
-        }, 200);
-        collapseHandler(false);
-        setFormOpen(true);
+        setAddUpdateValues({ setIsModalOpen, space: title.toLowerCase(), reflectChanges, setAddUpdateValues });
+        setIsModalOpen(true);
     }
 
-    function onEditClick(item) {
-
+    function onEditClick(itemKey, item) {
+        setAddUpdateValues({ setIsModalOpen, itemKey, item, space: title.toLowerCase(), reflectChanges, setAddUpdateValues });
+        setIsModalOpen(true);
     }
 
     return (
         <div>
+            <CustomModal {...{ isModalOpen, setIsModalOpen, outClick: false }}>
+                <AddUpdateForm {...addUpdateValues} />
+            </CustomModal>
             <div className='flex justify-between'>
                 <div className='cursor-pointer font-bold p-2 flex gap-1 w-full'
                     onClick={() => collapseHandler(!collapsed)}>
@@ -47,11 +41,6 @@ export default function Accordion({ title, items, insertInStack, insertData, rem
                 <div className='cursor-pointer w-10 px-2' onClick={onCreate}><Plus /></div>
             </div>
             {!collapsed && <div className='ms-9 pb-2 pr-2'>
-                {formOpen && <div className='flex'>
-                    <input type="text" className='w-full px-1 bg-teal-300 outline-teal-600' ref={inputFieldRef} value={inputFieldValue} onChange={(e) => setInputFieldValue(e.target.value)} />
-                    <div className='w-6 h-6 border mx-1 border-green-300 text-green-900 hover:bg-green-300' onClick={saveHandler}><Check /></div>
-                    <div className='w-6 h-6 border border-red-300 text-red-600 hover:bg-red-300' onClick={() => setFormOpen(false)}><Cross /></div>
-                </div>}
                 {items && Object.keys(items).map((key, index) => (
                     <div className='flex' key={index}>
                         <div className='flex gap-5 cursor-pointer w-full mr-2'>
@@ -62,7 +51,7 @@ export default function Accordion({ title, items, insertInStack, insertData, rem
                             </div>
                         </div>
                         <div className='flex gap-2'>
-                            <div className='w-5' onClick={() => onEditClick(key)}><Pencil /></div>
+                            <div className='w-5' onClick={() => onEditClick(key, items[key])}><Pencil /></div>
                             <div className='w-5' onClick={() => removeData(title.toLowerCase(), key)}><Bin /></div>
                         </div>
                     </div>

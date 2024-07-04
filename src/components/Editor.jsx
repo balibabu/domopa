@@ -6,7 +6,7 @@ import Pen from '../images/svg/Pen'
 export default function Editor() {
     return (
         <div className='h-dvh bg-slate-500'>
-            <div className='bg-teal-200'>
+            <div className='bg-teal-200' style={{ height: '20dvh' }}>
                 <div className='py-5 px-7'>
                     <div className='text-3xl pb-3 font-bold'>Activity Name</div>
                     <div className='flex gap-3 mb-3'>
@@ -21,9 +21,9 @@ export default function Editor() {
                     </div>
                 </div>
             </div>
-            <div className='p-5'>
-                <textarea name="" placeholder='Did' className='mb-3 outline-slate-500 px-3 py-2 w-full rounded-xl' rows={10} />
-                <textarea name="" placeholder='Next' className='mb-5 outline-slate-500 px-3 py-2 w-full rounded-xl' rows={10} />
+            <div className='p-5' style={{ height: '80dvh' }}>
+                <textarea name="" placeholder='Did' className='mb-3 outline-slate-500 px-3 py-2 w-full rounded-xl' style={{ height: '30dvh' }} />
+                <textarea name="" placeholder='Next' className='mb-3 outline-slate-500 px-3 py-2 w-full rounded-xl' style={{ height: '30dvh' }} />
                 <div className='bg-green-500 w-fit px-10 py-1 font-bold rounded-xl cursor-pointer on hover:bg-green-600'>save</div>
             </div>
         </div>

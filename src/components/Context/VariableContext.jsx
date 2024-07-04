@@ -13,6 +13,18 @@ export const VariableProvider = ({ children }) => {
     const [selected, setSelected] = useState({});
     const model = new LocalStorageJSONModel();
 
+    const [domains, setDomains] = useState({});
+    const [operations, setOperations] = useState({});
+    const [activities, setActivities] = useState({});
+    function reflectChanges() {
+        try { setDomains({ ...model.readEntry([...stack, 'domains']) } || {}); }
+        catch (error) { setDomains([]); }
+        try { setOperations({ ...model.readEntry([...stack, 'operations']) } || {}); }
+        catch (error) { setOperations([]); }
+        try { setActivities({ ...model.readEntry([...stack, 'activities']) } || {}); }
+        catch (error) { setActivities([]); }
+    }
+
     const contextData = {
         data, setData, model,
         insertData: (typ, newData) => addData(stack, setData, newData, typ),
@@ -21,6 +33,7 @@ export const VariableProvider = ({ children }) => {
         insertInStack: (typ, item) => addItem(setStack, typ, item),
         removeFromStack: (index) => removeItem(setStack, index),
         selected, setSelected,
+        reflectChanges, domains, operations, activities
     }
 
     return (
@@ -29,55 +42,3 @@ export const VariableProvider = ({ children }) => {
         </VariableContext.Provider>
     )
 }
-
-// const t = {
-//     dom: {
-//         key: {
-//             name: '',
-//             attributes: { key: value },
-//             space: {
-//                 dom: {}, op: {}, act: {}
-//             },
-//             created: '',
-//             modified: ''
-//         },
-//     },
-//     op: {
-//         key: {
-//             name: '',
-//             attributes: {},
-//             space: {
-//                 dom: {}, op: {}, act: {}
-//             },
-//             created: '',
-//             modified: ''
-//         },
-//         key2: {
-//             name: '',
-//             attributes: {},
-//             space: {
-//                 dom: {}, op: {}, act: {}
-//             },
-//             created: '',
-//             modified: ''
-//         }
-//     },
-//     act: {
-//         key: {
-//             // domain: same layer domain(key),
-//             // operation: same layer ops(key),
-//             name: '',
-//             attributes: {},
-//             space: {
-//                 dom: {}, op: {}, act: {}
-//             },
-//             created: '',
-//             modified: '',
-//             logStructure: {},
-//             logs: [
-//                 {}, {}
-//             ]
-//         }
-
-//     }
-// }

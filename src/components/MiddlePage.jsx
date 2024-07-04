@@ -4,6 +4,8 @@ import Cog from '../images/svg/Cog'
 import TableUI from './TableUI'
 import VariableContext from './Context/VariableContext';
 import { useNavigate } from 'react-router-dom';
+import Plus from '../images/svg/Plus';
+import Greater from '../images/svg/Greater';
 
 export default function MiddlePage() {
     const { stack } = useContext(VariableContext);
@@ -19,7 +21,7 @@ export default function MiddlePage() {
     }
 
     return (
-        <div className='w-full border-r border-gray-600 bg-gray-200'>
+        <div className='w-full border-r border-gray-600 bg-gray-200 relative'>
             <div className='p-4 px-6 flex flex-wrap'>
                 {/* <span className='hover:opacity-20 cursor-pointer' onClick={() => onBreadCrumbClick(-1)}>root</span> */}
                 {stack.map((item, i) => {
@@ -42,6 +44,9 @@ export default function MiddlePage() {
             </div>
             <hr className='border-gray-600' />
             <div className='flex-grow m-3'><TableUI /></div>
+
+            <button className='w-5 absolute bottom-2 left-1/2 bg-teal-400 rounded hover:rounded-full'><Greater /></button>
+            <button className='w-10 p-2 absolute bottom-5 right-5 bg-teal-400 rounded-full hover:rounded-xl' onClick={() => navigate('/editor')}><Plus /></button>
         </div>
     )
 }

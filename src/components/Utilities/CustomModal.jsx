@@ -6,13 +6,14 @@ const CustomModal = ({ children, isModalOpen, setIsModalOpen, col = 'xl:w-1/2 lg
             {isModalOpen &&
                 <div>
                     <div onClick={() => setIsModalOpen(!outClick)}
-                        className='fixed top-0 left-0 z-10 w-full h-full bg-black'
-                        style={{ opacity: `${opacity}%` }}></div>
+                        className='fixed top-0 left-0 w-full h-full bg-black'
+                        style={{ opacity: `${opacity}%`, zIndex: 5 }}></div>
 
-                    <div className={`fixed z-20 ${col}`}
+                    <div className={`fixed ${col}`}
                         style={{
                             top: `${top}%`, left: "50%",
                             transform: "translate(-50%, -50%)",
+                            zIndex: 6
                         }}>
                         {children}
                     </div>

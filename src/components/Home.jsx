@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import RightSide from './RightSide';
 import LeftSide from './LeftSide';
 import MiddlePage from './MiddlePage';
-import LSJSONTester from './LSJSONTester';
 import { useParams } from 'react-router-dom';
 import VariableContext from './Context/VariableContext';
 
@@ -21,11 +20,13 @@ export default function Home() {
     return (
         <>
             <div className='flex h-dvh'>
-                {/* <LSJSONTester /> */}
                 <LeftSide {...{ smallScreen, showLeftSide, setShowLeftSide }} />
                 <MiddlePage />
                 <RightSide {...{ smallScreen, showRightSide, setShowRightSide }} />
-            </div>
+            </div >
         </>
     );
 }
+/*
+
+*/
