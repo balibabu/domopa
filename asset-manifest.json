@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/domopa/static/css/main.1e98e4d0.css",
-    "main.js": "/domopa/static/js/main.08fee717.js",
+    "main.css": "/domopa/static/css/main.75d79c64.css",
+    "main.js": "/domopa/static/js/main.9bde02bb.js",
     "index.html": "/domopa/index.html",
-    "main.1e98e4d0.css.map": "/domopa/static/css/main.1e98e4d0.css.map",
-    "main.08fee717.js.map": "/domopa/static/js/main.08fee717.js.map"
+    "main.75d79c64.css.map": "/domopa/static/css/main.75d79c64.css.map",
+    "main.9bde02bb.js.map": "/domopa/static/js/main.9bde02bb.js.map"
   },
   "entrypoints": [
-    "static/css/main.1e98e4d0.css",
-    "static/js/main.08fee717.js"
+    "static/css/main.75d79c64.css",
+    "static/js/main.9bde02bb.js"
   ]
 }
