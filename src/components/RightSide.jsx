@@ -7,7 +7,7 @@ import CustomModal from './Utilities/CustomModal';
 import AttributeForm from './AttributeForm';
 import Bin from '../images/svg/Bin';
 import Pencil from '../images/svg/Pencil';
-import Confirmation from './Confirmation';
+import Confirmation from './Utilities/Confirmation';
 
 export default function RightSide({ smallScreen, showRightSide, setShowRightSide }) {
     return (
@@ -33,7 +33,7 @@ export default function RightSide({ smallScreen, showRightSide, setShowRightSide
 function PageContent() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [updatingItem, setUpdatingItem] = useState({});
-    const { model, selected, setSelected, stack, reflectChanges } = useContext(VariableContext);
+    const { model, selected, setSelected, stack } = useContext(VariableContext);
     const attkeys = Object.keys(selected.attributes || {});
 
     const [addUpdateValues, setAddUpdateValues] = useState({});

@@ -1,9 +1,28 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Eye from '../images/svg/Eye'
 import Pencil from '../images/svg/Pencil'
 import Bin from '../images/svg/Bin'
+import VariableContext from './Context/VariableContext';
+import Confirmation from './Utilities/Confirmation';
+import { useNavigate } from 'react-router-dom';
 
 export default function TableUI() {
+    const { model, stack, selected, activities, reflectChanges } = useContext(VariableContext);
+    const [logs, setLogs] = useState({});
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (selected.type === 'activities' && activities[selected.key]) {
+            setLogs(activities[selected.key].logs || {});
+        }
+    }, [activities, selected])
+
+    function deleteHandler(key) {
+        if (Confirmation('Are you sure?')) {
+            model.deleteEntry([...stack, selected.type, selected.key, 'logs', key]);
+            reflectChanges();
+        }
+    }
+
 
     return (
         <table className="w-full">
@@ -18,13 +37,20 @@ export default function TableUI() {
             </thead>
             {/* <hr className='border-4'/> */}
             <tbody>
-                <tr className='bg-white'>
-                    <td>1.</td>
-                    <td>activity 1</td>
-                    <td className='hidden md:table-cell'>mark</td>
-                    <td className='hidden md:table-cell'>created on</td>
-                    <td><div className='flex justify-between'><div className='w-6'><Eye /></div> <div className='w-6'><Pencil /></div><div className='w-6'><Bin /></div> </div></td>
-                </tr>
+                {selected.type === 'activities' && Object.keys(logs).map((key, i) => (
+                    <tr className='bg-white' key={key}>
+                        <td>{i + 1}.</td>
+                        <td>{logs[key].title}</td>
+                        <td className='hidden md:table-cell'>mark</td>
+                        <td className='hidden md:table-cell'>{new Date(parseInt(key)).toLocaleString()}</td>
+                        <td><div className='flex justify-between'>
+                            <div className='w-6'><Eye /></div>
+                            <div className='w-6' onClick={() => navigate(`/editor/${key}`)}><Pencil /></div>
+                            <div className='w-6' onClick={() => deleteHandler(key)}><Bin /></div>
+                        </div>
+                        </td>
+                    </tr>
+                ))}
             </tbody>
         </table>
     )

@@ -6,7 +6,7 @@ import Greater from '../images/svg/Greater';
 import VariableContext from './Context/VariableContext';
 import AppLogo from '../images/framer/AppLogo';
 import { useNavigate } from 'react-router-dom';
-import Confirmation from './Confirmation';
+import Confirmation from './Utilities/Confirmation';
 import ActivitiesAccord from './ActivitiesAccord';
 
 export default function LeftSide({ smallScreen, showLeftSide, setShowLeftSide }) {
@@ -43,9 +43,26 @@ function PageContent() {
 
     function removeData(space, key) {
         if (Confirmation('are you sure?')) {
+            setSelected({});
+            if (space === 'domains') {
+                delDependedActivity('domain', domains[key].name);
+            } else if (space === 'operations') {
+                delDependedActivity('operation', operations[key].name);
+            }
             model.deleteEntry([...stack, space, key]);
             reflectChanges();
         }
+
+    }
+
+    function delDependedActivity(space, name) {
+        const actKeys = Object.keys(activities);
+        actKeys.forEach((key) => {
+            const activity = activities[key];
+            if (activity[space] === name) {
+                model.deleteEntry([...stack, 'activities', key])
+            }
+        })
     }
 
 

@@ -11,8 +11,8 @@ export default function App() {
             <HashRouter>
                 <Routes >
                     <Route path="/" element={<Navigate to="/root" />} />
+                    <Route path="/editor/:logId" element={<Editor />} />
                     <Route path="/*" element={<Home />} />
-                    <Route path="/editor" element={<Editor />} />
                 </Routes>
             </HashRouter>
         </VariableProvider>
